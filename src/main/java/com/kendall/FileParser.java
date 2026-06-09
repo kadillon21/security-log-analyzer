@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.CharacterIterator;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,8 +14,12 @@ public class FileParser {
     private String timeStamp;
     private String endPoint;
     private String method;
+    private int statusCode;
+    private int responseSize;
+    private String userAgent;
 
-    public void loadLogFile() throws FileNotFoundException {
+    public List<Query> loadLogFile() throws FileNotFoundException {
+        List<Query> queries = new ArrayList<>();
         try {
             FileReader fileReader = new FileReader("src/main/resources/access.log");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -30,20 +34,22 @@ public class FileParser {
                 if (matcher.find()){
                     ip = matcher.group(1);
                     timeStamp = matcher.group(4);
-                    endPoint = matcher.group(6);
                     method = matcher.group(5);
-                }
-                System.out.println("IP: " + ip + " Time Stamp: " + timeStamp + " End Point " + endPoint + " Method " + method);
+                    endPoint = matcher.group(6);
+                    statusCode = Integer.parseInt(matcher.group(8));
+                    responseSize = Integer.parseInt(matcher.group(9));
+                    userAgent = matcher.group(11);
 
+                    queries.add(new Query(ip, timeStamp, endPoint, method, statusCode, responseSize, userAgent));
+                }
 
             }
-
-
 
         } catch (FileNotFoundException e){
             System.out.println("Error: " + e.getMessage());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        return queries;
     }
 }
