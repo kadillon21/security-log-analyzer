@@ -17,8 +17,8 @@ public class DatabaseManager {
                 "    time TEXT NOT NULL,\n" +
                 "    method TEXT NOT NULL,\n" +
                 "    endpoint TEXT NOT NULL,\n" +
-                "    status TEXT NOT NULL,\n" +
-                "    response TEXT NOT NULL,\n" +
+                "    status INT NOT NULL,\n" +
+                "    response INT NOT NULL,\n" +
                 "    user_agent TEXT NOT NULL\n" +
                 ");";
 
