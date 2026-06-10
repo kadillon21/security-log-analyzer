@@ -10,15 +10,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FileParser {
-    private String ip;
-    private String timeStamp;
-    private String endPoint;
-    private String method;
-    private int statusCode;
-    private int responseSize;
-    private String userAgent;
 
-    public List<Query> loadLogFile() throws FileNotFoundException {
+    public List<Query> parseLogFileInfo() throws FileNotFoundException {
         List<Query> queries = new ArrayList<>();
         try {
             FileReader fileReader = new FileReader("src/main/resources/access.log");
@@ -32,15 +25,16 @@ public class FileParser {
                 Matcher matcher = pattern.matcher(logEntry);
 
                 if (matcher.find()){
-                    ip = matcher.group(1);
-                    timeStamp = matcher.group(4);
-                    method = matcher.group(5);
-                    endPoint = matcher.group(6);
-                    statusCode = Integer.parseInt(matcher.group(8));
-                    responseSize = Integer.parseInt(matcher.group(9));
-                    userAgent = matcher.group(11);
+                    String ip = matcher.group(1);
+                    String timeStamp = matcher.group(4);
+                    String method = matcher.group(5);
+                    String endPoint = matcher.group(6);
+                    int statusCode = Integer.parseInt(matcher.group(8));
+                    int responseSize = Integer.parseInt(matcher.group(9));
+                    String userAgent = matcher.group(11);
 
                     queries.add(new Query(ip, timeStamp, endPoint, method, statusCode, responseSize, userAgent));
+
                 }
 
             }
